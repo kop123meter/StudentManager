@@ -1,3 +1,4 @@
+package role;
 /**
  * FileInfoReader
  * @author Ze Li and Chenwei Tang
