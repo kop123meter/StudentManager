@@ -5,23 +5,24 @@ package role;
  */
 
 import java.io.File;
+import java.util.ArrayList;
 public class FileInfoReader {
     private String fileName;
     private String fileType;
-    private String[] fileContent;
+    private ArrayList<String> fileContent;
     private int fileLength;
     
     public FileInfoReader(String filePath){
         File file = new File(filePath);
         fileName = file.getName();
         fileType = fileName.substring(fileName.lastIndexOf(".")+1);
-        fileLength = (int)file.length();
-        fileContent = new String[fileLength];
+        fileContent = new ArrayList<String>();
         try {
             java.util.Scanner input = new java.util.Scanner(file);
             int i = 0;
             while (input.hasNext()) {
-                fileContent[i] = input.nextLine();
+                fileContent.add(input.nextLine());
+                
                 i++;
             }
             input.close();
@@ -40,7 +41,7 @@ public class FileInfoReader {
         return fileType;
     }
 
-    public String[] getFileContent() {
+    public ArrayList<String> getFileContent() {
         return fileContent;
     }
 

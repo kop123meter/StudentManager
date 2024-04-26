@@ -12,10 +12,10 @@ abstract class AbstractUser {
     private String role;
     private int UID;
 
-    public AbstractUser(String filePath){
-        FileInfoReader reader = new FileInfoReader(filePath);
-        String[] fileContent = reader.getFileContent();
+    public AbstractUser(){
         
     }
+
+    
 
 }
