@@ -23,7 +23,7 @@ public class Course {
     }
 
     public String printCourseInfo(){
-        return "Course ID: " + courseID + "|Course Name: " + courseName + ","+ courseStartTime + "-" +courseEndTime + " on " + courseDay + ", with course capacity: " + courseCapacity + ", students: " + currentEnrollment + ", lecturer: " + courseInstructor;
+        return courseID + "|Course Name: " + courseName + ","+ courseStartTime + "-" +courseEndTime + " on " + courseDay + ", with course capacity: " + courseCapacity + ", students: " + currentEnrollment + ", lecturer: " + courseInstructor;
     }
 
     public int getEnrollment(){
@@ -34,5 +34,62 @@ public class Course {
         this.currentEnrollment = enrollment;
     } 
 
+    public void setCourseName(String courseName){
+        this.courseName = courseName;
+    }
+
+    public String getCourseName(){
+        return this.courseName;
+    }
+
+    public void setCourseID(String courseID){
+        this.courseID = courseID;
+    }
+
+    public String getCourseID(){
+        return this.courseID;
+    }
+
+    public void setCourseDay(String courseDay){
+        this.courseDay = courseDay;
+    }
+
+    public String getCourseDay(){
+        return this.courseDay;
+    }
+
+    public void setCourseStartTime(String courseStartTime){
+        this.courseStartTime = courseStartTime;
+    }
+
+    public String getCourseStartTime(){
+        return this.courseStartTime;
+    }
+
+    public void setCourseEndTime(String courseEndTime){
+        this.courseEndTime = courseEndTime;
+    }
+
+    public String getCourseEndTime(){
+        return this.courseEndTime;
+    }
+
+    public void setCourseCapacity(int courseCapacity){
+        this.courseCapacity = courseCapacity;
+    }
+
+    public int getCourseCapacity(){
+        return this.courseCapacity;
+    }
+
+    public void setCourseInstructor(String courseInstructor){
+        this.courseInstructor = courseInstructor;
+    }
+
+    public String getCourseInstructor(){
+        return this.courseInstructor;
+    }
+    
+    
 
 }

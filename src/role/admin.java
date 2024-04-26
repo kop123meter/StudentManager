@@ -1,4 +1,5 @@
 package role;
+import Course.*;
 
 
 /**
@@ -9,4 +10,7 @@ public class admin extends AbstractUser{
     public admin(){
         super("admin");
     }
+
+    // Edit Course List
+
 }

@@ -21,7 +21,6 @@ public class App {
         FileInfoReader courseInfo = new FileInfoReader("src/courseInfo.txt");
         for (int i = 0; i < courseInfo.getFileLength(); i++){
             String[] courseInfoArray = courseInfo.getFileContent().get(i).split(";");
-            
             for(int j = 0; j < courseInfoArray.length; j++){
                 courseInfoArray[j] = courseInfoArray[j].trim();
             }
