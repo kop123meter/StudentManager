@@ -83,26 +83,11 @@ abstract class AbstractUser {
         return this.username.equals(username);
     }
 
+    public String getPassword(){
+        return password;
+    }
+
     public abstract void menu();
 
-    public void login(){
-        Scanner input = new Scanner(System.in);
-        System.out.println("Please enter your username, or type 'q' to quit. ");
-        String username = input.nextLine();
-        if (username.equals("q")){
-            return;
-        }
-        System.out.println("Please enter your password, or type 'q' to quit. ");
-        String password = input.nextLine();
-        input.close();
-        if (password.equals("q")){
-            return;
-        }
-        if (checkUsername(username) && checkPassword(password)){
-            menu();
-        } else {
-            System.out.println("Invalid username or password");
-        }
-    }
 
 }

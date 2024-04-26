@@ -1,5 +1,6 @@
 package role;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import Course.*;
 /**
@@ -8,7 +9,9 @@ import Course.*;
  */
 public class Student extends AbstractUser{
     
-    Course course = new Course();
+    private ArrayList<Course> takenCourseList = new ArrayList<Course>();
+
+    Course course = new Course(); // used for calling functions in Course class
     public Student(){
         super();
     }
@@ -21,7 +24,7 @@ public class Student extends AbstractUser{
      * @param path the path of the file
      * @return void
      */
-    public void initStudentList(String path,ArrayList<Student> studentList){
+    public void initStudentList(String path,ArrayList<Student> studentList,ArrayList<Course> coursesList){
         // Initialize Course List
         FileInfoReader studentInfo = new FileInfoReader(path);
         // Get basic Information of the student
@@ -31,8 +34,20 @@ public class Student extends AbstractUser{
                 studentInfoArray[j] = studentInfoArray[j].trim();
             }
             Student student = new Student(Integer.parseInt(studentInfoArray[0]), studentInfoArray[1], studentInfoArray[2], studentInfoArray[3]);
-            
-           
+            if(studentInfoArray.length > 4){
+                String[] courseList = studentInfoArray[4].split(",");
+                for(int j = 0; j < courseList.length; j++){
+                    courseList[j] = courseList[j].trim();
+                }
+                for (String temp_course: courseList){
+                    String[] grad = temp_course.split(":");
+                    Course tempcourse = course.checkCourseInList(grad[0], coursesList);
+                    if(tempcourse != null){
+                        tempcourse.setGrade(grad[1]);
+                        student.takenCourseList.add(tempcourse);
+                    }
+                }
+            }
             studentList.add(student);
         }
     }
@@ -49,7 +64,9 @@ public class Student extends AbstractUser{
         System.out.println("5 -- View grades");
         System.out.println("6 -- Return to the main menu");
 
+
     }
+
 
     public void viewAllCourses(ArrayList<Course> coursesList){
         // View all courses
@@ -64,27 +81,81 @@ public class Student extends AbstractUser{
             System.out.println("No course available");
             return;
         }
-        course = course.checkCourseInList(name, coursesList);
-        if (course == null){
+        Course add_course = course.checkCourseInList(name, coursesList);
+        if (add_course == null){
             System.out.println("Course not found");
             return;
         } 
-        if (course.getCourseCapacity() == 0){
+        if (add_course.getCourseCapacity() == 0){
             System.out.println("Course is full");
             return;
         }
-        Course flagCourse = course.checkTimeConflict(course, coursesList);
-        if(flagCourse != null){
-            System.out.println("The course you selected has time conflict with " + flagCourse.getCourseID() + " " + flagCourse.getCourseName());
+        Course timeConflictCourse = course.checkTimeConflict(add_course, this.getCourseList());
+        if(timeConflictCourse != null){
+            System.out.println("The course you selected has time conflict with " + timeConflictCourse.getCourseID() + " " + timeConflictCourse.getCourseName());
         }
         else{
-            course.addStudent(this);
-            course.setCourseCapacity(course.getCourseCapacity()-1);
-            this.addCourse(course);
+            add_course.addStudent(this);
+            add_course.setCourseCapacity(add_course.getCourseCapacity()-1);
+            add_course.setCourseEnrollment(add_course.getCourseEnrollment()+1);
+            this.addCourse(add_course);
             System.out.println("Course added successfully");
         }
     
     }
+
+    public void viewGrades(){
+        // View enrolled courses
+        if(this.takenCourseList.size() == 0){
+            System.out.println("No course enrolled");
+            return;
+        }
+        for (Course course: this.takenCourseList){
+            System.out.println("Grade of "+ course.getCourseID() + " " + course.getCourseName() + " : " + course.getGrade());
+        }
+    }
+
+    public void dropCourse(String name){
+        // Drop course in the student's list
+        if(this.takenCourseList.size() == 0){
+            System.out.println("No course enrolled");
+            return;
+        }
+        Course drop_course = course.checkCourseInList(name, this.getCourseList());
+        if (drop_course == null){
+            System.out.println("Course not found");
+            return;
+        } 
+        drop_course.removeStudent(this);
+        drop_course.setCourseCapacity(drop_course.getCourseCapacity()+1);
+        drop_course.setCourseEnrollment(drop_course.getCourseEnrollment()-1);
+        this.removeCourse(drop_course);
+        System.out.println("Course dropped successfully!");
+    }
+
+    public void viewEnrolledCourses(){
+        // View enrolled courses
+        if(this.getCourseList().size() == 0){
+            System.out.println("No course enrolled");
+            return;
+        }
+        for (Course course: this.getCourseList()){
+            System.out.println(course.printCourseInfo());
+        }
+    }
+
+    public Student studentLogin(String username, String password, ArrayList<Student> studentList){
+        // Student Login
+        for (Student student: studentList){
+            if (student.getUsername().equals(username) && student.checkPassword(password)){
+                return student;
+            }
+        }
+        return null;
+    }
+
+   
+
    
 
 }

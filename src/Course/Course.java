@@ -14,7 +14,7 @@ public class Course {
     private int currentEnrollment;
     private String courseInstructor;
     private ArrayList<Student> studentList = new ArrayList<Student>();
-    private String grade; 
+    private String grade;
 
     public Course(){
         this.courseName = null;
@@ -90,6 +90,14 @@ public class Course {
         return this.courseEndTime;
     }
 
+    public void setGrade(String grade){
+        this.grade = grade;
+    }
+
+    public String getGrade(){
+        return this.grade;
+    }
+
     public void setCourseCapacity(int courseCapacity){
         this.courseCapacity = courseCapacity;
     }
@@ -106,13 +114,14 @@ public class Course {
         return this.courseInstructor;
     }
 
-    public void setGrade(String grade){
-        this.grade = grade;
+    public void setCourseEnrollment(int currentEnrollment){
+        this.currentEnrollment = currentEnrollment;
     }
 
-    public String getGrade(){
-        return this.grade;
+    public int getCourseEnrollment(){
+        return this.currentEnrollment;
     }
+
 
     public void addStudent(Student student){
         studentList.add(student);
@@ -121,6 +130,8 @@ public class Course {
     public void removeStudent(Student student){
         studentList.remove(student);
     }
+
+    
 
     public void initCourseList(String path, ArrayList<Course> coursesList){
         // Initialize Course List
@@ -158,8 +169,8 @@ public class Course {
     }
 
     public boolean compareCourseDay(String Course1, String Course2){
-        String[] course1 = Course1.split(" ");
-        String[] course2 = Course2.split(" ");
+        String[] course1 = Course1.split("");
+        String[] course2 = Course2.split("");
         int length = Math.min(course1.length, course2.length);
         for(int i = 0; i < length; i++){
             if(course1[i].equals(course2[i])){
@@ -169,13 +180,25 @@ public class Course {
         return false;
     }
 
+    public int timeConversion(String time){
+        String[] timeArray = time.split(":");
+        return Integer.parseInt(timeArray[0]) * 60 + Integer.parseInt(timeArray[1]);
+    }
+
     public Course checkTimeConflict(Course course, ArrayList<Course> coursesList){
+        int time1_start = timeConversion(course.getCourseStartTime());
+        int time1_end = timeConversion(course.getCourseEndTime());
         for(Course temp : coursesList){
-           if(temp.getCourseStartTime() == course.getCourseStartTime()){
-               if(compareCourseDay(temp.getCourseDay(), course.getCourseDay())){
-                   return course;
-               }
-           }
+            int time2_start = timeConversion(temp.getCourseStartTime());
+            int time2_end = timeConversion(temp.getCourseEndTime());
+            if(compareCourseDay(course.getCourseDay(), temp.getCourseDay())){
+                if(time1_start > time2_end || time1_end < time2_start){
+                    continue;
+                }
+                else{
+                    return temp;
+                }
+            }
         }
         return null;
     }

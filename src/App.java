@@ -13,6 +13,7 @@ public class App {
     ArrayList<Admin> adminList = new ArrayList<Admin>();
     ArrayList<Professor> userList = new ArrayList<Professor>();
     ArrayList<Course> coursesList = new ArrayList<Course>();
+    ArrayList<Student> studentList = new ArrayList<Student>();
     Course course = new Course();
     Student student = new Student();
     Professor professor = new Professor();
@@ -22,6 +23,9 @@ public class App {
     public void setUp(){
         // Setup Course
         course.initCourseList("src/courseInfo.txt", coursesList);
+
+        // Setup Student
+        student.initStudentList("src/studentInfo.txt",studentList, coursesList);
     }
 
     public void printLogin(){
@@ -34,13 +38,9 @@ public class App {
         System.out.println("4 -- Quit the System");
     }
 
-    public int userInputOption(){
-        System.out.println("Please enter your option, eg. '1'.");
-        Scanner input = new Scanner(System.in);
-        String username = input.nextLine();
-        username = username.trim();
-
-        input.close();  
+    public int userInputOption(String userOption){
+    
+        String username = userOption.trim(); 
         try{
             int option = Integer.parseInt(username);
             return option;
@@ -50,11 +50,92 @@ public class App {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
-        App app = new App();
-        app.setUp();        
-        app.printLogin();
+    public void printCourseList(ArrayList<Course> coursesList){
+        for(Course course: coursesList){
+            System.out.println(course.printCourseInfo());
+        }
+    }
+
     
+
+
+
+    public static void main(String[] args) throws Exception {
+        Scanner input = new Scanner(System.in);
+        App app = new App();
+        app.setUp(); 
+        int option = -1;       
+        while(option != 4){
+            app.printLogin();
+            System.out.println("Please enter your option, eg. '1'.");
+            option = app.userInputOption(input.nextLine());
+            if(option == 4){
+                break;
+            }
+            else if(option < 1 || option > 3){
+                System.out.println("Invalid Input");
+                continue;
+            }
+            System.out.println("Please enter your username, or type 'q' to quit. ");
+            String username = input.nextLine();
+            if(username.equals("q")){
+                continue;
+            }
+            System.out.println("Please enter your password, or type 'q' to quit. ");
+            String password = input.nextLine();
+            if(password.equals("q")){
+                continue;
+            }
+            if(option == 1){
+                app.student = app.student.studentLogin(username, password, app.studentList);
+                if(app.student != null){
+                    app.printCourseList(app.coursesList);
+                    int studentOption = -1;
+                    while(studentOption != 6){
+                        app.student.menu();
+                        System.out.println("Please enter your option, eg. '1'.");
+                        studentOption = app.userInputOption(input.nextLine());
+                        if(studentOption < 1 || studentOption > 6){
+                            System.out.println("Invalid Input");
+                            continue;
+                        }
+                        if(studentOption == 1){
+                            app.printCourseList(app.coursesList);
+                        } else if(studentOption == 2){
+                            System.out.println("Please enter the course ID you want to add, eg. 'CSC207'.");
+                            String courseID = input.nextLine();
+                            app.student.addStudentCourse(app.coursesList, courseID);
+
+                        } else if(studentOption == 3){
+                            app.student.viewEnrolledCourses();
+                        } else if(studentOption == 4){
+                            System.out.println("Please enter the course ID you want to drop, eg. 'CSC207'.");
+                            String courseID = input.nextLine();
+                            app.student.dropCourse(courseID);
+                        } else if(studentOption == 5){
+                            app.student.viewGrades();
+                        } else if(studentOption == 6){
+                            break;
+                        }
+                        
+                    
+                }
+                else{
+                    System.out.println("Invalid username or password");
+                }
+
+            } else if(option == 2){
+                Professor professor = new Professor();
+                //professor.login(username, password);
+            } else if(option == 3){
+                Admin admin = new Admin();
+                //admin.login(username, password);
+            }
+            
+          
+            }
+    
+        } // System whole loop
+        input.close();
     }
 }
