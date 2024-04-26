@@ -10,12 +10,13 @@ import Course.Course;
  */
 public class App {
 
-    ArrayList<admin> adminList = new ArrayList<admin>();
-    ArrayList<professor> userList = new ArrayList<professor>();
+    ArrayList<Admin> adminList = new ArrayList<Admin>();
+    ArrayList<Professor> userList = new ArrayList<Professor>();
     ArrayList<Course> coursesList = new ArrayList<Course>();
     Course course = new Course();
     Student student = new Student();
-    professor 
+    Professor professor = new Professor();
+    Admin admin = new Admin();
 
 
     public void setUp(){
@@ -24,20 +25,22 @@ public class App {
     }
 
     public void printLogin(){
-        System.out.println('-' * 20);
+        System.out.println("--------------------------------");
         System.out.println("Student Management System");
-        System.out.println('-' * 20);
+        System.out.println("--------------------------------");
         System.out.println("1 -- Login as a student");
         System.out.println("2 -- Login as a professor");
         System.out.println("3 -- Login as an admin");
         System.out.println("4 -- Quit the System");
     }
 
-    public int userInput(){
+    public int userInputOption(){
         System.out.println("Please enter your option, eg. '1'.");
         Scanner input = new Scanner(System.in);
         String username = input.nextLine();
         username = username.trim();
+
+        input.close();  
         try{
             int option = Integer.parseInt(username);
             return option;
@@ -50,26 +53,8 @@ public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
         App app = new App();
-        app.setUp();
-        
+        app.setUp();        
         app.printLogin();
-        int option = app.userInput();
-        switch(option){
-            case 1:
-                // Login as a student
-                break;
-            case 2:
-                // Login as a professor
-                break;
-            case 3:
-                // Login as an admin
-                break;
-            case 4:
-                // Quit the System
-                break;
-            default:
-                System.out.println("Invalid Option");
-        }
-        
+    
     }
 }

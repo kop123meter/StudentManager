@@ -17,8 +17,15 @@ abstract class AbstractUser {
     private String name;
     private int UID;
 
-    private ArrayList<Course> courseList = new ArrayList<Course>();
+    private ArrayList<Course> usercourseList = new ArrayList<Course>();
 
+    public AbstractUser(){
+        this.username = null;
+        this.password = null;
+        this.UID = 0;
+        this.name = null;
+        this.role = null;
+    }
     public AbstractUser(int UID, String name, String username,String password, String role){
         setRole(role);
         this.username = username;
@@ -28,15 +35,15 @@ abstract class AbstractUser {
     }
 
     public void addCourse(Course course){
-        courseList.add(course);
+        usercourseList.add(course);
     }
 
     public void removeCourse(Course course){
-        courseList.remove(course);
+        usercourseList.remove(course);
     }
 
     public ArrayList<Course> getCourseList(){
-        return courseList;
+        return usercourseList;
     }
     
     public int getUID(){
@@ -87,6 +94,7 @@ abstract class AbstractUser {
         }
         System.out.println("Please enter your password, or type 'q' to quit. ");
         String password = input.nextLine();
+        input.close();
         if (password.equals("q")){
             return;
         }

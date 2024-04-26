@@ -13,6 +13,7 @@ public class Course {
     private int courseCapacity;
     private int currentEnrollment;
     private String courseInstructor;
+    private ArrayList<Student> studentList = new ArrayList<Student>();
     private String grade; 
 
     public Course(){
@@ -113,6 +114,14 @@ public class Course {
         return this.grade;
     }
 
+    public void addStudent(Student student){
+        studentList.add(student);
+    }
+
+    public void removeStudent(Student student){
+        studentList.remove(student);
+    }
+
     public void initCourseList(String path, ArrayList<Course> coursesList){
         // Initialize Course List
         FileInfoReader courseInfo = new FileInfoReader(path);
@@ -137,5 +146,37 @@ public class Course {
             }
         }
         return null;  
+    }
+
+    public Course checkCourseInList(String courseID, ArrayList<Course> coursesList){
+        for (Course course : coursesList){
+            if (course.getCourseID().equals(courseID)){
+                return course;
+            }
+        }
+        return null;
+    }
+
+    public boolean compareCourseDay(String Course1, String Course2){
+        String[] course1 = Course1.split(" ");
+        String[] course2 = Course2.split(" ");
+        int length = Math.min(course1.length, course2.length);
+        for(int i = 0; i < length; i++){
+            if(course1[i].equals(course2[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Course checkTimeConflict(Course course, ArrayList<Course> coursesList){
+        for(Course temp : coursesList){
+           if(temp.getCourseStartTime() == course.getCourseStartTime()){
+               if(compareCourseDay(temp.getCourseDay(), course.getCourseDay())){
+                   return course;
+               }
+           }
+        }
+        return null;
     }
 }
