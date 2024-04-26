@@ -1,4 +1,7 @@
 package Course;
+import java.util.ArrayList;
+
+import role.*;
 
 public class Course {
 
@@ -10,6 +13,18 @@ public class Course {
     private int courseCapacity;
     private int currentEnrollment;
     private String courseInstructor;
+    private String grade; 
+
+    public Course(){
+        this.courseName = null;
+        this.courseID = null;
+        this.courseDay = null;
+        this.courseStartTime = null;
+        this.courseEndTime = null;
+        this.courseCapacity = 0;
+        this.currentEnrollment = 0;
+        this.courseInstructor = null;
+    }
 
     public Course(String courseID, String courseName, String courseInstructor, String courseDay, String courseStartTime, String courseEndTime, int courseCapacity){
         this.courseName = courseName;
@@ -89,7 +104,26 @@ public class Course {
     public String getCourseInstructor(){
         return this.courseInstructor;
     }
-    
-    
 
+    public void setGrade(String grade){
+        this.grade = grade;
+    }
+
+    public String getGrade(){
+        return this.grade;
+    }
+
+    public void initCourseList(String path, ArrayList<Course> coursesList){
+        // Initialize Course List
+        FileInfoReader courseInfo = new FileInfoReader(path);
+        for (int i = 0; i < courseInfo.getFileLength(); i++){
+            String[] courseInfoArray = courseInfo.getFileContent().get(i).split(";");
+            for(int j = 0; j < courseInfoArray.length; j++){
+                courseInfoArray[j] = courseInfoArray[j].trim();
+            }
+            Course course = new Course(courseInfoArray[0], courseInfoArray[1], courseInfoArray[2], courseInfoArray[3], courseInfoArray[4], courseInfoArray[5], Integer.parseInt(courseInfoArray[6]));
+            coursesList.add(course);
+        }
+    }
+    
 }

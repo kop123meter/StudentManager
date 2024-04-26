@@ -12,12 +12,17 @@ abstract class AbstractUser {
     private String username;
     private String password;
     private String role;
+    private String name;
     private int UID;
 
-    private ArrayList<Course> courseList;
+    private ArrayList<Course> courseList = new ArrayList<Course>();
 
-    public AbstractUser(String role){
+    public AbstractUser(int UID, String name, String username,String password, String role){
         setRole(role);
+        this.username = username;
+        this.password = password;
+        this.UID = UID;
+        this.name = name;
     }
 
     public void addCourse(Course course){
