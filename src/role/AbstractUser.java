@@ -2,6 +2,8 @@ package role;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import Course.Course;  // This is the Course class that is being imported
 
 /**
@@ -36,6 +38,14 @@ abstract class AbstractUser {
     public ArrayList<Course> getCourseList(){
         return courseList;
     }
+    
+    public int getUID(){
+        return UID;
+    }
+
+    public String getName(){
+        return name;
+    }
 
     public String getUsername() {
         return username;
@@ -64,6 +74,27 @@ abstract class AbstractUser {
 
     public boolean checkUsername(String username){
         return this.username.equals(username);
+    }
+
+    public abstract void menu();
+
+    public void login(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Please enter your username, or type 'q' to quit. ");
+        String username = input.nextLine();
+        if (username.equals("q")){
+            return;
+        }
+        System.out.println("Please enter your password, or type 'q' to quit. ");
+        String password = input.nextLine();
+        if (password.equals("q")){
+            return;
+        }
+        if (checkUsername(username) && checkPassword(password)){
+            menu();
+        } else {
+            System.out.println("Invalid username or password");
+        }
     }
 
 }

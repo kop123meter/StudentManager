@@ -118,6 +118,10 @@ public class Course {
         FileInfoReader courseInfo = new FileInfoReader(path);
         for (int i = 0; i < courseInfo.getFileLength(); i++){
             String[] courseInfoArray = courseInfo.getFileContent().get(i).split(";");
+            if(courseInfoArray.length != 7){
+                System.out.println("Course" + courseInfoArray[0] +" information is missing");
+                continue;
+            }
             for(int j = 0; j < courseInfoArray.length; j++){
                 courseInfoArray[j] = courseInfoArray[j].trim();
             }
@@ -125,5 +129,13 @@ public class Course {
             coursesList.add(course);
         }
     }
-    
+
+    public String getCourseInfo(String courseID, ArrayList<Course> coursesList){
+        for (Course course : coursesList){
+            if (course.getCourseID().equals(courseID)){
+                return course.printCourseInfo();
+            }
+        }
+        return null;  
+    }
 }

@@ -1,5 +1,5 @@
 package role;
 
-public class professor {
+public class Professor {
     
 }
