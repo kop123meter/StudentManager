@@ -6,9 +6,7 @@ package role;
  * @author Ze Li and Chenwei Tang
  */
 public class admin extends AbstractUser{
-    public admin(String filePath){
-        //super(filePath);
+    public admin(){
+        super("admin");
     }
-
-
 }

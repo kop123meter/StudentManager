@@ -1,5 +1,11 @@
 package role;
-
-public class student {
+/**
+ * student
+ * @author Ze Li and Chenwei Tang
+ */
+public class student extends AbstractUser{
     
+    public student(){
+        super("student");
+    }
 }
