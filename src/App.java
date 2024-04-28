@@ -11,7 +11,7 @@ import Course.Course;
 public class App {
 
     ArrayList<Admin> adminList = new ArrayList<Admin>();
-    ArrayList<Professor> userList = new ArrayList<Professor>();
+    ArrayList<Professor> professorList = new ArrayList<Professor>();
     ArrayList<Course> coursesList = new ArrayList<Course>();
     ArrayList<Student> studentList = new ArrayList<Student>();
     Course course = new Course();
@@ -26,6 +26,14 @@ public class App {
 
         // Setup Student
         student.initStudentList("src/studentInfo.txt",studentList, coursesList);
+
+        // Setup Professor
+        professor.initProfessorList("src/profInfo.txt", professorList);
+        for(Professor professor: professorList){
+            System.out.println(professor.getName() + " " + professor.getUID() + " " + professor.getUsername() + " " + professor.getPassword());
+        }
+
+        // Setup Admin
     }
 
     public void printLogin(){
@@ -123,9 +131,40 @@ public class App {
             else{
                 System.out.println("Invalid username or password");
             }
-            }// Option 1 loop // srudent
+        }// Option 1 loop // srudent
+        
+
+
+        else if(option==2){
+            app.professor = app.professor.findProfessor(username, password, app.professorList);
+            if(app.professor != null){
+                int professorOption = -1;
+                while(professorOption != 3){
+                    app.professor.menu();
+                    System.out.println("Please enter your option, eg. '1'.");
+                    professorOption = app.userInputOption(input.nextLine());
+                    if(professorOption < 1 || professorOption > 3){
+                        System.out.println("Invalid Input");
+                        continue;
+                    }
+                    if(professorOption == 1){
+                        app.professor.viewGivenCourses(app.coursesList);
+                        app.printCourseList(app.professor.getCourseList());
+                    } else if(professorOption == 2){
+                        System.out.println("Please enter the course ID you want to view, eg. 'CSC207'.");
+                        String courseID = input.nextLine();
+                        app.professor.viewStudentList(courseID);
+                    } else if(professorOption == 3){
+                        break;
+                    }
+                }
+            } else{
+                System.out.println("Invalid username or password");
+            }
+        } // Option 2 loop // professor
+       
     
-        } // System whole loop
+    } // System whole loop
         input.close();
     } // main function end   
 } // class end

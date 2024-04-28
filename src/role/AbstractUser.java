@@ -26,6 +26,7 @@ abstract class AbstractUser {
         this.name = null;
         this.role = null;
     }
+    
     public AbstractUser(int UID, String name, String username,String password, String role){
         setRole(role);
         this.username = username;

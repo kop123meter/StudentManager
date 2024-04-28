@@ -202,4 +202,16 @@ public class Course {
         }
         return null;
     }
+    
+    /**
+     * Used for Professor to print the student list of the given course
+     */
+    public void printStudentList(){
+        if(studentList.size() == 0){
+            System.out.println("No student enrolled in this course");
+        }
+        for(Student student: studentList){
+            System.out.println(student.getUID() + " "+ student.getName());
+        }
+    }
 }
