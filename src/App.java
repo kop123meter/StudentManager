@@ -117,25 +117,15 @@ public class App {
                         } else if(studentOption == 6){
                             break;
                         }
-                        
-                    
-                }
-                else{
-                    System.out.println("Invalid username or password");
-                }
+            } // srudent loop
 
-            } else if(option == 2){
-                Professor professor = new Professor();
-                //professor.login(username, password);
-            } else if(option == 3){
-                Admin admin = new Admin();
-                //admin.login(username, password);
+            }// Student login if-else
+            else{
+                System.out.println("Invalid username or password");
             }
-            
-          
-            }
+            }// Option 1 loop // srudent
     
         } // System whole loop
         input.close();
-    }
-}
+    } // main function end   
+} // class end
