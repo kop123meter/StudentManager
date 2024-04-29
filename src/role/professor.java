@@ -60,6 +60,17 @@ public class Professor extends AbstractUser{
         System.out.println("Course not found");
     }
 
+    public Professor findProfessor(int UID, ArrayList<Professor> professorList){
+        for(Professor professor: professorList){
+            if(professor.getUID() == UID){
+                return professor;
+            }
+        }
+        return null;
+    }
+
+    
+
     
 
 

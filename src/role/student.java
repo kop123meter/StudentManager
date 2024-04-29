@@ -154,6 +154,16 @@ public class Student extends AbstractUser{
         return null;
     }
 
+    public Student findStudent(int UID, ArrayList<Student> studentList){
+        // Find student by UID
+        for (Student student: studentList){
+            if (student.getUID() == UID){
+                return student;
+            }
+        }
+        return null;
+    }
+
    
 
    

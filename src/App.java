@@ -29,11 +29,10 @@ public class App {
 
         // Setup Professor
         professor.initProfessorList("src/profInfo.txt", professorList);
-        for(Professor professor: professorList){
-            System.out.println(professor.getName() + " " + professor.getUID() + " " + professor.getUsername() + " " + professor.getPassword());
-        }
-
+ 
         // Setup Admin
+        admin.initAdminList("src/adminInfo.txt", adminList);
+
     }
 
     public void printLogin(){
@@ -95,7 +94,8 @@ public class App {
                 continue;
             }
             if(option == 1){
-                app.student = app.student.studentLogin(username, password, app.studentList);
+                Student tempStudent = new Student();
+                app.student = tempStudent.studentLogin(username, password, app.studentList);
                 if(app.student != null){
                     app.printCourseList(app.coursesList);
                     int studentOption = -1;
@@ -136,7 +136,8 @@ public class App {
 
 
         else if(option==2){
-            app.professor = app.professor.findProfessor(username, password, app.professorList);
+            Professor tempProfessor = new Professor();
+            app.professor = tempProfessor.findProfessor(username, password, app.professorList);
             if(app.professor != null){
                 int professorOption = -1;
                 while(professorOption != 3){
@@ -163,6 +164,234 @@ public class App {
             }
         } // Option 2 loop // professor
        
+
+
+        else if(option == 3){
+            Admin tempAdmin = new Admin();
+            app.admin = tempAdmin.adminLogin(username, password, app.adminList);
+            if(app.admin != null){
+                app.admin.menu();
+                int adminOption = -1;
+                while (adminOption != 8) {
+                    adminOption = app.userInputOption(input.nextLine());
+                 
+                    if(adminOption == 8){
+                        break;
+                    }
+                    else if(adminOption == 1){
+                        app.printCourseList(app.coursesList);
+                    }
+                    else if(adminOption == 2){
+                        String userAddCourseID = "0";
+                        
+                        while (true) {
+                            System.out.println("Please enter the course ID you want to add, eg. 'CSC207'. Type 'q' to quit.");
+                            userAddCourseID = input.nextLine();
+                            if(userAddCourseID.toLowerCase().equals("q")){
+                                break;
+                            }
+                            else if(app.course.checkCourseInList(userAddCourseID, app.coursesList) != null){
+                                System.out.println("Course already exists");
+                                continue;
+                            }
+                            else{
+                                System.out.println("Please enter the course name, eg. 'Software Design'.");
+                                String courseName = input.nextLine();
+                                System.out.println("Please enter the course day, eg. 'MF'.");
+                                String courseDay = input.nextLine();
+                                System.out.println("Please enter the course start time, eg. '10:00'.");
+                                String courseStartTime = input.nextLine();
+                                System.out.println("Please enter the course end time, eg. '11:00'.");
+                                String courseEndTime = input.nextLine();
+                                System.out.println("Please enter the course capacity, eg. '30'.");
+                                int courseCapacity = app.userInputOption(input.nextLine());
+                                if(courseCapacity < 0){
+                                    System.out.println("Invalid Input");
+                                    continue;
+                                }
+                                System.out.println("Please enter the course lectuer's ID");
+                                int professorID = app.userInputOption(input.nextLine());
+                                if(professorID < 0){
+                                    System.out.println("Invalid Input");
+                                    continue;
+                                }
+                                Professor professor = app.professor.findProfessor(professorID, app.professorList);
+                                if(professor == null){
+                                    System.out.println("Professor not found, please add the professor first");
+                                    System.out.println("Please enter the professor's name or typr 'q' to exit, eg. 'John Doe'.");
+                                    String professorName = input.nextLine();
+                                    if(professorName.toLowerCase().equals("q")){
+                                        break;
+                                    }
+                                    System.out.println("Please enter the professor's username or typr 'q' to exit, eg. 'johndoe'.");
+                                    String professorUsername = input.nextLine();
+                                    if(professorUsername.toLowerCase().equals("q")){
+                                        break;
+                                    }
+                                    System.out.println("Please enter the professor's password or typr 'q' to exit, eg. '1234'.");
+                                    String professorPassword = input.nextLine();
+                                    if(professorPassword.toLowerCase().equals("q")){
+                                        break;
+                                    }
+                                    professor = new Professor(professorName,professorID, professorUsername, professorPassword);
+                                    app.professorList.add(professor);
+                                    System.out.println("Successfully added the professor:" +professorID + " " + professorName);
+                                }
+                                Course newCourse = new Course(userAddCourseID, 
+                                                            courseName, 
+                                                            professor.getName(),
+                                                            courseDay,
+                                                            courseStartTime,
+                                                            courseEndTime,
+                                                            courseCapacity);
+                                app.admin.addNewCourse(app.coursesList, newCourse);
+                            } // add course loop
+
+                        } // add course loop
+                      
+                        
+                    } // option 2 loop
+                    else if(adminOption == 3){
+                      System.out.println("Please enter the course ID you want to delete  or type 'q' to exit, eg. 'CSC207'.");
+                      String courseID = input.nextLine();
+                      if(courseID.toLowerCase().equals("q")){
+                          break;
+                      }
+                      if(app.admin.deleteCourse(app.coursesList, courseID)){
+                          System.out.println("Successfully deleted the course: " + courseID);
+                      }
+                    } // option 3 Delete Course
+                    else if(adminOption == 4){
+                      String addProfessorID = "0";
+                      while (true) {
+                        addProfessorID = input.nextLine();
+                        if(addProfessorID.toLowerCase().equals("q")){
+                            break;
+                        }
+                        int professorID = app.userInputOption(addProfessorID);
+                        if(professorID < 0){
+                            System.out.println("Invalid Input");
+                            continue;
+                        }
+                        Professor professor = app.professor.findProfessor(professorID, app.professorList);
+                        if(professor != null){
+                            System.out.println("Professor already exists");
+                            continue;
+                        }
+                        System.out.println("Please enter the professor's name or typr 'q' to exit, eg. 'John Doe'.");
+                        String professorName = input.nextLine();
+                        if(professorName.toLowerCase().equals("q")){
+                            break;
+                        }
+                        System.out.println("Please enter the professor's username or typr 'q' to exit, eg. 'johndoe'.");
+                        String professorUsername = input.nextLine();
+                        if(professorUsername.toLowerCase().equals("q")){
+                            break;
+                        }
+                        System.out.println("Please enter the professor's password or typr 'q' to exit, eg. '1234'.");
+                        String professorPassword = input.nextLine();
+                        if(professorPassword.toLowerCase().equals("q")){
+                            break;
+                        }
+                        professor = new Professor(professorName,professorID, professorUsername, professorPassword);
+                        if(app.admin.addNewProfessor(app.professorList, professor)){
+                        System.out.println("Successfully added the professor:" +professorID + " " + professorName);}
+                      } // add professor loop
+                     
+                    } // option 4 Add Professor
+                    else if(adminOption == 5){
+                       String deleteProfessorID = "0";
+                       while (true) {
+                        deleteProfessorID = input.nextLine();
+                        if(deleteProfessorID.toLowerCase().equals("q")){
+                            break;
+                        }
+                        int professorID = app.userInputOption(deleteProfessorID);
+                        if(professorID < 0){
+                            System.out.println("Invalid Input");
+                            continue;
+                        }
+                        if(app.admin.deleteProfessor(app.professorList, professorID)){
+                            System.out.println("Successfully deleted the professor: " + professorID);
+                        }
+                       }
+                    } // option 5 Delete Professor
+                    else if(adminOption == 6){
+                        String addStudentID = "0";
+                        while (true) {
+                            addStudentID = input.nextLine();
+                            if(addStudentID.toLowerCase().equals("q")){
+                                break;
+                            }
+                            int studentID = app.userInputOption(addStudentID);
+                            if(studentID < 0){
+                                System.out.println("Invalid Input");
+                                continue;
+                            }
+                            Student student = app.student.findStudent(studentID, app.studentList);
+                            if(student != null){
+                                System.out.println("Student already exists");
+                                continue;
+                            }
+                            System.out.println("Please enter the student's name or typr 'q' to exit, eg. 'John Doe'.");
+                            String studentName = input.nextLine();
+                            if(studentName.toLowerCase().equals("q")){
+                                break;
+                            }
+                            System.out.println("Please enter the student's username or typr 'q' to exit, eg. 'johndoe'.");
+                            String studentUsername = input.nextLine();
+                            if(studentUsername.toLowerCase().equals("q")){
+                                break;
+                            }
+                            System.out.println("Please enter the student's password or typr 'q' to exit, eg. '1234'.");
+                            String studentPassword = input.nextLine();
+                            if(studentPassword.toLowerCase().equals("q")){
+                                break;
+                            }
+                            student = new Student(studentID,studentName,studentUsername, studentPassword);
+                            if(app.admin.addNewStudent(app.studentList, student)){
+                            System.out.println("Successfully added the student:" +studentID + " " + studentName);
+                            }
+                            
+                        }
+                    } // option 6 Add Student
+                    else if(adminOption == 7){
+                        String deleteStudentID = "0";
+                        while (true) {
+                            deleteStudentID = input.nextLine();
+                            if(deleteStudentID.toLowerCase().equals("q")){
+                                break;
+                            }
+                            int studentID = app.userInputOption(deleteStudentID);
+                            if(studentID < 0){
+                                System.out.println("Invalid Input");
+                                continue;
+                            }
+                            if(app.admin.deleteStudent(app.studentList, studentID)){
+                                System.out.println("Successfully deleted the student: " + studentID);
+                            }
+                        }
+                        
+                    } // option 7 Delete Student
+                    else if(adminOption == 8){
+                        break;
+                    }
+                    else{
+                        System.out.println("Invalid Input");
+                    } 
+
+                    app.admin.menu();
+                } // admin loop
+            }
+            else{
+                System.out.println("Invalid username or password");
+            } // Admin login
+            
+        } // Admin option    
+
+
+
+
     
     } // System whole loop
         input.close();
