@@ -236,6 +236,7 @@ public class App {
                                     professor = new Professor(professorName,professorID, professorUsername, professorPassword);
                                     app.professorList.add(professor);
                                     System.out.println("Successfully added the professor:" +professorID + " " + professorName);
+                                    break;
                                 }
                                 Course newCourse = new Course(userAddCourseID, 
                                                             courseName, 
@@ -296,6 +297,7 @@ public class App {
                         professor = new Professor(professorName,professorID, professorUsername, professorPassword);
                         if(app.admin.addNewProfessor(app.professorList, professor)){
                         System.out.println("Successfully added the professor:" +professorID + " " + professorName);}
+                        break;
                       } // add professor loop
                      
                     } // option 4 Add Professor
@@ -351,6 +353,7 @@ public class App {
                             student = new Student(studentID,studentName,studentUsername, studentPassword);
                             if(app.admin.addNewStudent(app.studentList, student)){
                             System.out.println("Successfully added the student:" +studentID + " " + studentName);
+                            break;
                             }
                             
                         }
@@ -369,6 +372,7 @@ public class App {
                             }
                             if(app.admin.deleteStudent(app.studentList, studentID)){
                                 System.out.println("Successfully deleted the student: " + studentID);
+                                break;
                             }
                         }
                         
